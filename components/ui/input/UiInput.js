@@ -3,7 +3,7 @@ import React from "react";
 const UiInput = ({ type, id, placeholder, inputClass, className }) => {
   return (
     <div className={`${className}`}>
-      <label for={id}></label>
+      <label htmlFor={id}></label>
       <input
         id={id}
         type={type}

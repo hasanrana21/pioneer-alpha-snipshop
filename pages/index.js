@@ -1,9 +1,15 @@
+import Banner from "@/components/modules/home/banner/Banner";
+import ProductsCategory from "@/components/modules/home/products-category/ProductsCategory";
 import MainLayout from "@/layouts/MainLayout";
+import { useState } from "react";
 
 export default function Home() {
+  const [categorySlug, setCategorySlug] = useState("all");
+  console.log("setCategorySlug", categorySlug);
   return (
     <MainLayout>
-      <h3>this is home page</h3>
+      <Banner setCategorySlug={setCategorySlug} />
+      <ProductsCategory categorySlug={categorySlug} />
     </MainLayout>
   );
 }

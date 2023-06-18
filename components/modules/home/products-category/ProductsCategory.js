@@ -1,4 +1,6 @@
+import UiButton from "@/components/ui/button/UiButton";
 import UiLoader from "@/components/ui/loader/UiLoader";
+import UiModal from "@/components/ui/modal/UiModal";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaTrashAlt, FaRegEdit } from "react-icons/fa";
@@ -7,6 +9,12 @@ const ProductsCategory = ({ categorySlug }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deletedId, setDeletedId] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [updateId, setUpdateId] = useState(null);
+  const [form, setForm] = useState({
+    title: "",
+  });
+  console.log("inpu", form.title);
   const fetchProducts = async () => {
     setLoading(true);
     let productsUrl =
@@ -36,6 +44,23 @@ const ProductsCategory = ({ categorySlug }) => {
       }
     });
   };
+
+  const updateProduct = (id) => {
+    setOpenModal(true);
+    setUpdateId(id);
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleUpdateForm = (e) => {
+    e.preventDefault();
+    console.log("form", form);
+  };
   return (
     <div className="section">
       <div className="section__content my-10">
@@ -60,7 +85,10 @@ const ProductsCategory = ({ categorySlug }) => {
                 <h4 className="text-lg font-medium my-4">{product?.title}</h4>
                 <p>$ {product?.price}</p>
                 <div className="flex justify-end space-x-4">
-                  <button className="text-2xl">
+                  <button
+                    className="text-2xl"
+                    onClick={() => updateProduct(product?.id)}
+                  >
                     <FaRegEdit />
                   </button>
                   <button
@@ -73,6 +101,17 @@ const ProductsCategory = ({ categorySlug }) => {
               </div>
             )
           )}
+
+          <UiModal
+            title="Product Update"
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+          >
+            <form onSubmit={handleUpdateForm}>
+              <input type="text" name="title" onChange={handleChange} />
+              <UiButton type="submit" label="Submit" />
+            </form>
+          </UiModal>
         </div>
       )}
     </div>

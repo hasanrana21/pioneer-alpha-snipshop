@@ -13,6 +13,7 @@ const ProductsCategory = ({ categorySlug }) => {
   const [openModal, setOpenModal] = useState(false);
   const [modalKey, setModalKey] = useState("");
   const [updateData, setUpdateData] = useState({});
+  const [processing, setProcessing] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     price: "",
@@ -73,6 +74,7 @@ const ProductsCategory = ({ categorySlug }) => {
 
   //   PRODUCT CREATE & UPDATE FEATURE
   const handleSubmitForm = (e) => {
+    setProcessing(true);
     e.preventDefault();
     if (modalKey === "update") {
       let updatePayload = {
@@ -89,7 +91,10 @@ const ProductsCategory = ({ categorySlug }) => {
           });
           setProducts(updatedProduct);
         })
-        .finally(() => setOpenModal(false));
+        .finally(() => {
+          setOpenModal(false);
+          setProcessing(false);
+        });
     } else {
       let payload = formData;
       axios
@@ -98,7 +103,10 @@ const ProductsCategory = ({ categorySlug }) => {
           res.data.id = products.length + 1;
           products.unshift(res?.data);
         })
-        .finally(() => setOpenModal(false));
+        .finally(() => {
+          setOpenModal(false);
+          setProcessing(false);
+        });
     }
   };
   return (
@@ -122,7 +130,7 @@ const ProductsCategory = ({ categorySlug }) => {
         <div className="grid grid-flow-row grid-cols-5 gap-5">
           {products.map((product, key) =>
             deletedId === product?.id ? (
-              <UiLoader />
+              <UiLoader key={key} />
             ) : (
               // PRODUCT LIST
               <div key={key} className="card__wrapper border rounded-xl p-6">
@@ -197,6 +205,7 @@ const ProductsCategory = ({ categorySlug }) => {
               )}
               <UiButton
                 type="submit"
+                processing={processing}
                 label={modalKey === "update" ? "Update" : "Create"}
               />
             </form>

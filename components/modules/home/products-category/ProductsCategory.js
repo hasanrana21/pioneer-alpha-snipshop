@@ -1,6 +1,7 @@
 import UiLoader from "@/components/ui/loader/UiLoader";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { FaTrashAlt, FaRegEdit } from "react-icons/fa";
 
 const ProductsCategory = ({ categorySlug }) => {
   const [products, setProducts] = useState([]);
@@ -37,7 +38,7 @@ const ProductsCategory = ({ categorySlug }) => {
   };
   return (
     <div className="section">
-      <div className="section__content">
+      <div className="section__content my-10">
         <h2 className="text-3xl font-medium my-2">Shop by Category</h2>
         <p className="text-lg my-2">
           Life is hard enough already. Let us <br /> make it a little easier.
@@ -57,10 +58,16 @@ const ProductsCategory = ({ categorySlug }) => {
                   style={{ backgroundImage: `url(${product?.thumbnail})` }}
                 ></div>
                 <h4 className="text-lg font-medium my-4">{product?.title}</h4>
-                <p>${product?.price}</p>
-                <div className="my-2 text-end">
-                  <button onClick={() => deleteProduct(product?.id)}>
-                    Del
+                <p>$ {product?.price}</p>
+                <div className="flex justify-end space-x-4">
+                  <button className="text-2xl">
+                    <FaRegEdit />
+                  </button>
+                  <button
+                    className="text-2xl"
+                    onClick={() => deleteProduct(product?.id)}
+                  >
+                    <FaTrashAlt />
                   </button>
                 </div>
               </div>

@@ -1,14 +1,24 @@
 import React from "react";
 
-const UiInput = ({ type, id, placeholder, inputClass, className }) => {
+const UiInput = ({
+  type,
+  id,
+  name,
+  placeholder,
+  inputClass,
+  className,
+  handleChange,
+}) => {
   return (
     <div className={`${className}`}>
       <label htmlFor={id}></label>
       <input
         id={id}
         type={type}
+        name={name}
         placeholder={placeholder}
-        className={`focus:outline-none text-base py-2 px-4 rounded-full w-full ${inputClass}`}
+        className={`focus:outline-none text-base py-2 px-4 rounded w-full border border-[#7DE1EF] ${inputClass}`}
+        onChange={handleChange}
       />
     </div>
   );

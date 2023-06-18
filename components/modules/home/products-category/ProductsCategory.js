@@ -4,7 +4,7 @@ import UiLoader from "@/components/ui/loader/UiLoader";
 import UiModal from "@/components/ui/modal/UiModal";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { FaTrashAlt, FaRegEdit } from "react-icons/fa";
+import { FaTrashAlt, FaRegEdit, FaPlus } from "react-icons/fa";
 
 const ProductsCategory = ({ categorySlug }) => {
   const [products, setProducts] = useState([]);
@@ -108,9 +108,13 @@ const ProductsCategory = ({ categorySlug }) => {
         <p className="text-lg my-2">
           Life is hard enough already. Let us <br /> make it a little easier.
         </p>
-        <span>
-          <UiButton label="Add Product" onClick={handleModal} />
-        </span>
+        <UiButton
+          className="flex justify-end mt-0"
+          label="Add Product"
+          onClick={handleModal}
+        >
+          <FaPlus />
+        </UiButton>
       </div>
       {loading ? (
         <UiLoader />
@@ -130,13 +134,13 @@ const ProductsCategory = ({ categorySlug }) => {
                 <p>$ {product?.price}</p>
                 <div className="flex justify-end space-x-4">
                   <button
-                    className="text-2xl"
+                    className="text-2xl text-blue-500"
                     onClick={() => handleModal(product, "update")}
                   >
                     <FaRegEdit />
                   </button>
                   <button
-                    className="text-2xl"
+                    className="text-2xl text-red-500"
                     onClick={() => deleteProduct(product?.id)}
                   >
                     <FaTrashAlt />
@@ -156,37 +160,45 @@ const ProductsCategory = ({ categorySlug }) => {
               {modalKey === "update" ? (
                 <UiInput
                   id="title"
+                  label="Update Ttitle"
                   name="title"
                   type="text"
-                  placeholder="Update Title"
+                  placeholder="Title"
                   handleChange={handleChange}
+                  value={updateData.title}
                 />
               ) : (
                 <>
                   <UiInput
                     id="title"
+                    label="Add Ttitle"
                     name="title"
                     type="text"
-                    placeholder="Add Title"
+                    placeholder="Title"
                     handleChange={handleChange}
                   />
                   <UiInput
                     id="price"
+                    label="Add Price"
                     name="price"
                     type="text"
-                    placeholder="Add Price"
+                    placeholder="Add"
                     handleChange={handleChange}
                   />
                   <UiInput
                     id="thumbnail"
+                    label="Add Image Url"
                     name="thumbnail"
                     type="text"
-                    placeholder="Add Image Url"
+                    placeholder="Image"
                     handleChange={handleChange}
                   />
                 </>
               )}
-              <UiButton type="submit" label="Submit" />
+              <UiButton
+                type="submit"
+                label={modalKey === "update" ? "Update" : "Create"}
+              />
             </form>
           </UiModal>
         </div>

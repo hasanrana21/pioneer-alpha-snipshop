@@ -1,0 +1,5 @@
+@import "./components/navbar.css";
+
+.section {
+  @apply lg:w-[1400px] w-[900px] mx-auto;
+}

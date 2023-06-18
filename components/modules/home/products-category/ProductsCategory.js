@@ -31,6 +31,7 @@ const ProductsCategory = ({ categorySlug }) => {
       if (res?.data?.isDeleted) {
         let deleted = products.filter((item) => item?.id !== id);
         setProducts(deleted);
+        setDeletedId(null);
       }
     });
   };

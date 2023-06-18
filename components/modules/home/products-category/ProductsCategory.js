@@ -11,15 +11,18 @@ const ProductsCategory = ({ categorySlug }) => {
   const [loading, setLoading] = useState(false);
   const [deletedId, setDeletedId] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const [modalKey, setModalKey] = useState("");
   const [updateData, setUpdateData] = useState({});
-  const [updateForm, setUpdateForm] = useState({
+  const [formData, setFormData] = useState({
     title: "",
+    price: "",
+    thumbnail: "",
   });
 
   //   SET FORM DATA
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUpdateForm((prevState) => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -57,38 +60,57 @@ const ProductsCategory = ({ categorySlug }) => {
     });
   };
 
-  //   SET UPDATED DATA & OPEN MODAL
-  const handleUpdate = async (product) => {
+  //   HANDLE CREATE AND UPDATE MODAL
+  const handleModal = async (product, key) => {
     await setOpenModal(true);
-    await setUpdateData(product);
+    if (key === "update") {
+      await setUpdateData(product);
+      setModalKey("update");
+    } else {
+      setModalKey("create");
+    }
   };
 
-  //   PRODUCT UPDATED
-  const handleUpdateForm = (e) => {
+  //   PRODUCT CREATE & UPDATE FEATURE
+  const handleSubmitForm = (e) => {
     e.preventDefault();
-    let payload = {
-      title: updateForm.title,
-    };
-    axios
-      .put(`https://dummyjson.com/products/${updateData?.id}`, payload)
-      .then((res) => {
-        let updatedProduct = products.map((item) => {
-          if (res.data?.id === item?.id) {
-            item = res.data;
-          }
-          return item;
-        });
-        setProducts(updatedProduct);
-      })
-      .finally(() => setOpenModal(false));
+    if (modalKey === "update") {
+      let updatePayload = {
+        title: formData.title,
+      };
+      axios
+        .put(`https://dummyjson.com/products/${updateData?.id}`, updatePayload)
+        .then((res) => {
+          let updatedProduct = products.map((item) => {
+            if (res.data?.id === item?.id) {
+              item = res.data;
+            }
+            return item;
+          });
+          setProducts(updatedProduct);
+        })
+        .finally(() => setOpenModal(false));
+    } else {
+      let payload = formData;
+      axios
+        .post("https://dummyjson.com/products/add", payload)
+        .then((res) => {
+          res.data.id = products.length + 1;
+          products.unshift(res?.data);
+        })
+        .finally(() => setOpenModal(false));
+    }
   };
   return (
-    <div className="section">
+    <div className="wrapper__container">
       <div className="section__content my-10">
         <h2 className="text-3xl font-medium my-2">Shop by Category</h2>
         <p className="text-lg my-2">
           Life is hard enough already. Let us <br /> make it a little easier.
         </p>
+        <span>
+          <UiButton label="Add Product" onClick={handleModal} />
+        </span>
       </div>
       {loading ? (
         <UiLoader />
@@ -98,6 +120,7 @@ const ProductsCategory = ({ categorySlug }) => {
             deletedId === product?.id ? (
               <UiLoader />
             ) : (
+              // PRODUCT LIST
               <div key={key} className="card__wrapper border rounded-xl p-6">
                 <div
                   className="w-full h-64 rounded-b-lg bg-cover bg-center"
@@ -108,7 +131,7 @@ const ProductsCategory = ({ categorySlug }) => {
                 <div className="flex justify-end space-x-4">
                   <button
                     className="text-2xl"
-                    onClick={() => handleUpdate(product)}
+                    onClick={() => handleModal(product, "update")}
                   >
                     <FaRegEdit />
                   </button>
@@ -123,19 +146,46 @@ const ProductsCategory = ({ categorySlug }) => {
             )
           )}
 
+          {/* CREATE & UPDATE MODAL */}
           <UiModal
-            title="Product Update"
+            title={modalKey === "update" ? "Product Update" : "Create Product"}
             openModal={openModal}
             setOpenModal={setOpenModal}
           >
-            <form onSubmit={handleUpdateForm}>
-              <UiInput
-                id="title"
-                name="title"
-                type="text"
-                placeholder="Update Title"
-                handleChange={handleChange}
-              />
+            <form onSubmit={handleSubmitForm}>
+              {modalKey === "update" ? (
+                <UiInput
+                  id="title"
+                  name="title"
+                  type="text"
+                  placeholder="Update Title"
+                  handleChange={handleChange}
+                />
+              ) : (
+                <>
+                  <UiInput
+                    id="title"
+                    name="title"
+                    type="text"
+                    placeholder="Add Title"
+                    handleChange={handleChange}
+                  />
+                  <UiInput
+                    id="price"
+                    name="price"
+                    type="text"
+                    placeholder="Add Price"
+                    handleChange={handleChange}
+                  />
+                  <UiInput
+                    id="thumbnail"
+                    name="thumbnail"
+                    type="text"
+                    placeholder="Add Image Url"
+                    handleChange={handleChange}
+                  />
+                </>
+              )}
               <UiButton type="submit" label="Submit" />
             </form>
           </UiModal>

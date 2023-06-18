@@ -1,5 +1,8 @@
 @import "./components/navbar.css";
 
+.wrapper__container {
+  @apply lg:w-[1400px] w-[900px] mx-auto;
+}
 .section {
-  @apply lg:w-[1400px] w-[900px] mx-auto py-10;
+  @apply py-10 px-1;
 }

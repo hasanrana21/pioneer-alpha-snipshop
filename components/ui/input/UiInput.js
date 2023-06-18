@@ -1,6 +1,7 @@
 import React from "react";
 
 const UiInput = ({
+  label,
   type,
   id,
   name,
@@ -10,8 +11,8 @@ const UiInput = ({
   handleChange,
 }) => {
   return (
-    <div className={`${className}`}>
-      <label htmlFor={id}></label>
+    <div className={`mb-4 ${className}`}>
+      <label htmlFor={id}>{label}</label>
       <input
         id={id}
         type={type}

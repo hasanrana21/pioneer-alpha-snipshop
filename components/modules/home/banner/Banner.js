@@ -13,7 +13,7 @@ const Banner = ({ setCategorySlug }) => {
   }, []);
   return (
     <div className="bg-[#7DE1EF]">
-      <div className="section">
+      <div className="wrapper__container">
         <ul className="flex whitespace-nowrap overflow-x-hidden">
           <li
             className="text-lg font-medium py-2 px-4 cursor-pointer"

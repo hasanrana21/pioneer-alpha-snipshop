@@ -118,7 +118,7 @@ const ProductsCategory = ({ categorySlug }) => {
         </p>
         <UiButton
           className="flex justify-end mt-0"
-          label="Add Product"
+          label="Add New Product"
           onClick={handleModal}
         >
           <FaPlus />
@@ -138,8 +138,12 @@ const ProductsCategory = ({ categorySlug }) => {
                   className="w-full h-64 rounded-b-lg bg-cover bg-center"
                   style={{ backgroundImage: `url(${product?.thumbnail})` }}
                 ></div>
-                <h4 className="text-lg font-medium my-4">{product?.title}</h4>
-                <p>$ {product?.price}</p>
+                <h4 className="text-lg font-medium mt-4">{product?.title}</h4>
+                <h6>
+                  Category:{" "}
+                  <span className="font-medium">{product?.category}</span>
+                </h6>
+                <p className="mt-5">$ {product?.price}</p>
                 <div className="flex justify-end space-x-4">
                   <button
                     className="text-2xl text-blue-500"

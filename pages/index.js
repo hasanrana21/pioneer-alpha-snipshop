@@ -8,7 +8,7 @@ export default function Home() {
   console.log("setCategorySlug", categorySlug);
   return (
     <MainLayout>
-      <Banner setCategorySlug={setCategorySlug} />
+      <Banner setCategorySlug={setCategorySlug} categorySlug={categorySlug} />
       <ProductsCategory categorySlug={categorySlug} />
     </MainLayout>
   );
